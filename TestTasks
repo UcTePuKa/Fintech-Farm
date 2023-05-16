@@ -2,7 +2,7 @@
 select top 3 *
   from bundesliga_player
  where position like 'Defender -%'
-order by price desc
+ order by price desc
 
 
 --2. В разрезе клуба и игрока посчитать, сколько игроков подписало контракт с клубом после него
@@ -20,7 +20,7 @@ select club,
 select club
   from bundesliga_player
  where nationality = 'France'
-group by club
+ group by club
 having avg(price) > 5
 
 
@@ -28,7 +28,7 @@ having avg(price) > 5
 select club
   from bundesliga_player
  group by club
- having (countIf(id, nationality = 'Germany')*100/count(id)) > 90
+having (countIf(id, nationality = 'Germany')*100/count(id)) > 90
  
  
  --5. Выбрать самого высокооплачиваемого игрока в своем возрасте (на выходе имя + зарплата)
@@ -49,7 +49,7 @@ with avgPrice as (
  select position, 
         avg(price) as AvgPrice
    from bundesliga_player
- group by position
+  group by position
 )
 select name
   from bundesliga_player t1
@@ -59,12 +59,12 @@ select name
   
   --7. На какой позиции тяжелей всего получить контракт с какой-либо компанией (adidas, puma)
 select top 1 position
-    from (select position,
-                 count() as cnt 
-            from bundesliga_player
-           where outfitter = ''
-           group by position)
-   order by cnt desc
+  from (select position,
+               count() as cnt 
+          from bundesliga_player
+         where outfitter = ''
+         group by position)
+  order by cnt desc
 
 
 --8.Посчитать, в какой команде раньше всего закончится контракт у 5 игроков
@@ -106,8 +106,8 @@ select top 1
                 arrayElement(splitByChar(' ', name), 1) as FirstName,
                 count() as Cnt
            from bundesliga_player
-        group by club, FirstName
-          having Cnt > 1)
+          group by club, FirstName
+         having Cnt > 1)
  
           
 --12. Вывести команды, где топ-3 игрока по зарплате занимают 50% платежной ведомости
@@ -125,8 +125,8 @@ select club,
                price,
                ROW_NUMBER() OVER(PARTITION BY club ORDER BY price DESC) AS RowNum 
           from bundesliga_player)
- where RowNum <= 3
- group by club
+  where RowNum <= 3
+  group by club
 )
 select t1.club
   from clubSpend       t1
