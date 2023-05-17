@@ -3,7 +3,7 @@ select top 3
        club
   from (select club,
                sum(price) as AmtDef
-          from v_ovechkin.Test_Task
+          from bundesliga_player
          where position like 'Defender -%'
          group by club)
 order by AmtDef desc
@@ -18,7 +18,7 @@ select club,
                contract_expires,
                Rank() over(partition by club order by contract_expires) as Rnk,
                count()                                                  as Cnt
-          from v_ovechkin.Test_Task
+          from bundesliga_player
          where contract_expires != '1970-01-01'
          group by club, contract_expires)
  where Rnk <= 5
@@ -35,7 +35,7 @@ select top 1
        age
   from (select age,
                count() as Cnt 
-          from v_ovechkin.Test_Task
+          from bundesliga_player
          where price = max_price
          group by age)
  order by Cnt desc, age
